@@ -65,5 +65,30 @@ RSpec.describe "Vendors API Endpoints", type: :request do
       expect(created_vendor.contact_phone).to eq(vendor_params[:contact_phone])
       expect(created_vendor.credit_accepted).to eq(vendor_params[:credit_accepted])      
     end
+
+    it "sends an error if a new vendor request is sent through missing any of the following attribures: name, description, contact_name, contact_phone, and credit_accepted" do
+      vendor_id = create(:vendor).id
+
+      vendor_params = ({
+                        name: "Happy Honey",
+                        description: "We get our honey from happy bees",
+                        contact_name: "Horace",
+                        contact_phone: "1-276-593-3530",
+                      })
+      headers = { "CONTENT_TYPE" => "application/json" }
+
+      post "/api/v0/vendors", headers: headers, params: JSON.generate(vendor: vendor_params)
+
+      created_vendor = Vendor.last
+            
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(400)
+
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:errors]).to be_a(Array)
+      expect(data[:errors].first[:status]).to eq("400")
+      expect(data[:errors].first[:title]).to eq("Credit accepted is reserved, Credit accepted is not included in the list")
+    end
   end
 end
