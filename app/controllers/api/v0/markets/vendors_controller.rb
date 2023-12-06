@@ -1,8 +1,9 @@
-class Api::V0::VendorsController < ApplicationController
+class Api::V0::Markets::VendorsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
-  
-  def show
-    render json: VendorSerializer.new(Vendor.find(params[:id]))
+
+  def index
+    vendors = Market.find(params[:market_id]).vendors
+    render json: VendorSerializer.new(vendors)
   end
 
   private
