@@ -15,6 +15,11 @@ class Api::V0::VendorsController < ApplicationController
     end
   end
 
+  def destroy
+    Vendor.delete(params[:id])
+    head :no_content
+  end
+
   private
 
   def vendor_params

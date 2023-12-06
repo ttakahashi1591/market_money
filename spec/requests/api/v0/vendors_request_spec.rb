@@ -91,4 +91,18 @@ RSpec.describe "Vendors API Endpoints", type: :request do
       expect(data[:errors].first[:title]).to eq("Credit accepted is reserved, Credit accepted is not included in the list")
     end
   end
+
+  describe "delete a vendor" do
+    it "can delete an existing vendor" do
+      vendor = create(:vendor)
+
+      expect(Vendor.count).to eq(1)
+
+      delete "/api/v0/vendors/#{vendor.id}"
+
+      expect(response).to be_successful
+      expect(response).to have_http_status(204)
+      expect(Vendor.count).to eq(0)
+    end
+  end
 end
