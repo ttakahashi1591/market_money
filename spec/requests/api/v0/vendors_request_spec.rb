@@ -110,32 +110,44 @@ RSpec.describe "Vendors API Endpoints", type: :request do
     it "can update one or more attributes of a specific vendor" do
       vendor = create(:vendor)
 
-      body = {
-              "name": "Hungry Honey",
-              "description": "We get our honey from hungry bees",
-              "contact_name": "James",
-              "credit_accepted": "true"
-              }
+      body = ({
+                "name": "Hungry Honey",
+                "description": "We get our honey from hungry bees",
+                "contact_name": "James",
+                "credit_accepted": true,
+              })
+      headers = { "CONTENT_TYPE" => "application/json" }
+      patch "/api/v0/vendors/#{vendor.id}", headers: headers, params: JSON.generate(vendor: body)
+      
+      updated_vendor = Vendor.last
+      
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      
+      expect(updated_vendor.name).to eq("Hungry Honey")
+      expect(updated_vendor.description).to eq("We get our honey from hungry bees")
+      expect(updated_vendor.contact_name).to eq("James")
+      expect(updated_vendor.credit_accepted).to eq(true)
+      
+      body = ({
+        "name": "No More Honey",
+        "description": "We dont have bees to get honey from",
+        "contact_name": "Not Available"
+      })
+      headers = { "CONTENT_TYPE" => "application/json" }
+      
+      require 'pry'; binding.pry
+      patch "/api/v0/vendors/#{updated_vendor.id}", headers: headers, params: JSON.generate(vendor: body)
 
-      patch "/api/v0/vendors/#{vendor.id}", params: body
+      updated_vendor = Vendor.last
+            
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
 
-      expect(vendor.name).to eq("Hungry Honey")
-      expect(vendor.description).to eq("We get our honey from hungry bees")
-      expect(vendor.contact_name).to eq("James")
-      expect(vendor.credit_accepted).to eq("true")
-
-      body = {
-              "name": "No More Honey",
-              "description": "We dont have bees to get honey from",
-              "contact_name": "Not Available"
-              }
-
-      patch "/api/v0/vendors/#{vendor.id}", params: body
-
-      expect(vendor.name).to eq("No More Honey")
-      expect(vendor.description).to eq("We dont have bees to get honey from")
-      expect(vendor.contact_name).to eq("Not Available")
-      expect(vendor.credit_accepted).to eq("true")
+      expect(updated_vendor.name).to eq("No More Honey")
+      expect(updated_vendor.description).to eq("We dont have bees to get honey from")
+      expect(updated_vendor.contact_name).to eq("Not Available")
+      expect(updated_vendor.credit_accepted).to eq(true)
     end
   end
 end
