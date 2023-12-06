@@ -134,6 +134,19 @@ RSpec.describe "Markets API Endpoints", type: :request do
           expect(vendor[:attributes][:credit_accepted]).to be_a(TrueClass).or be_a(FalseClass)
         end
       end
+
+      it "sends an error if an invalid market id is entered for retrieving a market's vendors" do
+        get "/api/v0/markets/15/vendors"
+
+        expect(response).to_not be_successful
+        expect(response.status).to eq(404)
+
+        data = JSON.parse(response.body, symbolize_names: true)
+          
+        expect(data[:errors]).to be_a(Array)
+        expect(data[:errors].first[:status]).to eq("404")
+        expect(data[:errors].first[:title]).to eq("Couldn't find Market with 'id'=15")
+      end
     end
   end
 end
