@@ -6,6 +6,9 @@
           1,
           null,
           1,
+          1,
+          2,
+          2,
           null,
           null
         ]
@@ -73,6 +76,13 @@
           null,
           1,
           null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
           null,
           null
         ]
@@ -307,16 +317,7 @@
           null
         ]
       },
-      "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/spec/models/market_vendor_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          null,
-          null
-        ]
-      },
-      "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/app/models/market_vendor.rb": {
+      "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/app/models/market.rb": {
         "lines": [
           1,
           1,
@@ -331,11 +332,34 @@
           null
         ]
       },
+      "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/spec/models/market_vendor_spec.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          1,
+          2,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/app/models/market_vendor.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
       "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/spec/models/vendor_spec.rb": {
         "lines": [
           1,
           null,
           1,
+          1,
+          2,
+          2,
           null,
           null
         ]
@@ -413,14 +437,6 @@
           null
         ]
       },
-      "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/app/models/market.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          null
-        ]
-      },
       "/Users/thomastakahashi/Turing/turing_work/3mod/projects/market_money/app/controllers/api/v0/markets_controller.rb": {
         "lines": [
           1,
@@ -453,6 +469,6 @@
         ]
       }
     },
-    "timestamp": 1701816677
+    "timestamp": 1701827741
   }
 }
