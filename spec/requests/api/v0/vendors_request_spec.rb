@@ -105,4 +105,37 @@ RSpec.describe "Vendors API Endpoints", type: :request do
       expect(Vendor.count).to eq(0)
     end
   end
+
+  describe "update a vendor" do
+    it "can update one or more attributes of a specific vendor" do
+      vendor = create(:vendor)
+
+      body = {
+              "name": "Hungry Honey",
+              "description": "We get our honey from hungry bees",
+              "contact_name": "James",
+              "credit_accepted": "true"
+              }
+
+      patch "/api/v0/vendors/#{vendor.id}", params: body
+
+      expect(vendor.name).to eq("Hungry Honey")
+      expect(vendor.description).to eq("We get our honey from hungry bees")
+      expect(vendor.contact_name).to eq("James")
+      expect(vendor.credit_accepted).to eq("true")
+
+      body = {
+              "name": "No More Honey",
+              "description": "We dont have bees to get honey from",
+              "contact_name": "Not Available"
+              }
+
+      patch "/api/v0/vendors/#{vendor.id}", params: body
+
+      expect(vendor.name).to eq("No More Honey")
+      expect(vendor.description).to eq("We dont have bees to get honey from")
+      expect(vendor.contact_name).to eq("Not Available")
+      expect(vendor.credit_accepted).to eq("true")
+    end
+  end
 end
