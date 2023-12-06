@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe MarketSerializer, type: :request do
   describe "Market Serializer" do
-    it "serailizes " do
+    it "serailizes data to JSON" do
       create_list(:market, 5)
 
       get api_v0_markets_path
