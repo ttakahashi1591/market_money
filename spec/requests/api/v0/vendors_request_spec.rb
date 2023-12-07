@@ -136,7 +136,6 @@ RSpec.describe "Vendors API Endpoints", type: :request do
       })
       headers = { "CONTENT_TYPE" => "application/json" }
       
-      require 'pry'; binding.pry
       patch "/api/v0/vendors/#{updated_vendor.id}", headers: headers, params: JSON.generate(vendor: body)
 
       updated_vendor = Vendor.last
@@ -148,6 +147,75 @@ RSpec.describe "Vendors API Endpoints", type: :request do
       expect(updated_vendor.description).to eq("We dont have bees to get honey from")
       expect(updated_vendor.contact_name).to eq("Not Available")
       expect(updated_vendor.credit_accepted).to eq(true)
+    end
+
+    it "sends an error if an invalid vendor id is entered" do
+      body = ({
+                "name": "Hungry Honey",
+                "description": "We get our honey from hungry bees",
+                "contact_name": "James",
+                "credit_accepted": true
+              })
+      headers = { "CONTENT_TYPE" => "application/json" }
+
+      patch "/api/v0/vendors/15", headers: headers, params: JSON.generate(vendor: body)
+      
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(404)
+      
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:errors]).to be_an(Array)
+      expect(data[:errors].first[:status]).to eq("404")
+      expect(data[:errors].first[:title]).to eq("Couldn't find Vendor with 'id'=15")
+    end  
+
+    it "sends an error if an attribute if an empty attribute is entered" do
+      vendor = create(:vendor)
+
+      body = ({
+                "name": "No More Honey",
+                "description": "We dont have bees to get honey from",
+                "contact_name": "",
+                "credit_accepted": true
+      })
+      
+      headers = { "CONTENT_TYPE" => "application/json" }
+      
+      patch "/api/v0/vendors/#{vendor.id}", headers: headers, params: JSON.generate(vendor: body)
+            
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(400)
+
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:errors]).to be_an(Array)
+      expect(data[:errors].first[:status]).to eq("400")
+      expect(data[:errors].first[:title]).to eq("Contact name can't be blank")
+    end
+
+    it "sends an error if an attribute if an empty attribute is entered" do
+      vendor = create(:vendor)
+
+      body = ({
+                "name": "No More Honey",
+                "description": "We dont have bees to get honey from",
+                "contact_name": "James",
+                "credit_accepted": nil
+      })
+
+      headers = { "CONTENT_TYPE" => "application/json" }
+      
+      patch "/api/v0/vendors/#{vendor.id}", headers: headers, params: JSON.generate(vendor: body)
+            
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(400)
+
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:errors]).to be_an(Array)
+      expect(data[:errors].first[:status]).to eq("400")
+      expect(data[:errors].first[:title]).to eq("Credit accepted is reserved, Credit accepted is not included in the list")
     end
   end
 end
