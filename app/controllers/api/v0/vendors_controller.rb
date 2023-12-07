@@ -41,10 +41,6 @@ class Api::V0::VendorsController < ApplicationController
       .serialize_json, status: :not_found
   end
 
-  def validation_failed(errors)
-    render json: ErrorSerializer.new(ErrorMessage.new(errors.full_messages.join(', '), 400)).serialize_json, status: :bad_request
-  end
-
   def update_vendor_params
     params.fetch(:vendor, {}).permit!
   end
