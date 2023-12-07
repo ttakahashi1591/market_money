@@ -1,14 +1,13 @@
 class Api::V0::MarketVendorsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
-  rescue_from ActiveRecord::RecordInvalid, with: :validation_failed
 
   def create
-    market_vendor = MarketVendor.new(market_vendor_params)
+    create_market_vendor = MarketVendor.new(market_vendor_params)
 
-    if market_vendor.save
+    if create_market_vendor.save
       render json: { message: "Successfully added vendor to market" }, status: :created
     else
-      validation_failed(market_vendor.errors)
+      validation_failed(create_market_vendor.errors)
     end
   end
 
@@ -24,6 +23,6 @@ class Api::V0::MarketVendorsController < ApplicationController
   end
 
   def validation_failed(errors)
-    render json: ErrorSerializer.new(ErrorMessage.new(errors.full_messages.join(', '), 400)).serialize_json, status: :bad_request
+    render json: ErrorSerializer.new(ErrorMessage.new(errors.full_messages.join(', '), 404)).serialize_json, status: :bad_request
   end
 end

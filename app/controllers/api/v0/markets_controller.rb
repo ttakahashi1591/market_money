@@ -2,8 +2,7 @@ class Api::V0::MarketsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
 
   def index
-    a = render json: MarketSerializer.new(Market.all)
-    # binding.pry
+    render json: MarketSerializer.new(Market.all)
   end
 
   def show

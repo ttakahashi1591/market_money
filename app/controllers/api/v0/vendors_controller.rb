@@ -33,7 +33,7 @@ class Api::V0::VendorsController < ApplicationController
   private
 
   def vendor_params
-    params.require(:vendor).permit(:name, :description, :contact_name, :contact_phone, :credit_accepted)
+    params.require(:vendor).permit(:id, :name, :description, :contact_name, :contact_phone, :credit_accepted)
   end
 
   def not_found_response(exception)
