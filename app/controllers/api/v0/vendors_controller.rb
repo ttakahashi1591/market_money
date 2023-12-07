@@ -15,6 +15,16 @@ class Api::V0::VendorsController < ApplicationController
     end
   end
 
+  def update
+    vendor = Vendor.find(params[:id])
+
+    if vendor.update(update_vendor_params)
+      render json: VendorSerializer.new(vendor), status: :ok
+    else
+      validation_failed(vendor.errors)
+    end
+  end
+
   def destroy
     Vendor.delete(params[:id])
     head :no_content
@@ -33,5 +43,9 @@ class Api::V0::VendorsController < ApplicationController
 
   def validation_failed(errors)
     render json: ErrorSerializer.new(ErrorMessage.new(errors.full_messages.join(', '), 400)).serialize_json, status: :bad_request
+  end
+
+  def update_vendor_params
+    params.fetch(:vendor, {}).permit!
   end
 end
