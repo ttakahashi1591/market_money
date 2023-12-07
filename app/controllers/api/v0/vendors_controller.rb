@@ -33,16 +33,12 @@ class Api::V0::VendorsController < ApplicationController
   private
 
   def vendor_params
-    params.require(:vendor).permit(:name, :description, :contact_name, :contact_phone, :credit_accepted)
+    params.require(:vendor).permit(:id, :name, :description, :contact_name, :contact_phone, :credit_accepted)
   end
 
   def not_found_response(exception)
     render json: ErrorSerializer.new(ErrorMessage.new(exception.message, 404))
       .serialize_json, status: :not_found
-  end
-
-  def validation_failed(errors)
-    render json: ErrorSerializer.new(ErrorMessage.new(errors.full_messages.join(', '), 400)).serialize_json, status: :bad_request
   end
 
   def update_vendor_params
