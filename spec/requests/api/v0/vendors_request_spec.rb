@@ -94,6 +94,8 @@ RSpec.describe "Vendors API Endpoints", type: :request do
 
   describe "delete a vendor" do
     it "can delete an existing vendor" do
+      Vendor.destroy_all
+      
       vendor = create(:vendor)
 
       expect(Vendor.count).to eq(1)
